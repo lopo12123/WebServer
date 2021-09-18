@@ -8,10 +8,6 @@ app.get('/', (req, res) => {
     res.send("hi there!")
 })
 
-app.post('/', (req, res) => {
-    res.send('hi there, post')
-})
-
 app.listen(PORT, HOST, () => {
-    console.log('start at %s:%d', HOST, PORT)
+    console.log('server run at %s:%d now （press Ctrl+C to exit）', HOST, PORT)
 })
