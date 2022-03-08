@@ -2,10 +2,18 @@ const express = require('express')
 const app = express()
 
 const HOST = '127.0.0.1'
-const PORT = 3000
+const PORT = 8910
 
 app.get('/', (req, res) => {
-    res.send("hi there!")
+    setTimeout(() => {
+        res.setHeader('Access-Control-Allow-Origin', '*')
+        res.send('done')
+    }, 5_000)
+})
+
+app.get('/cookie', (req, res) => {
+    console.log('GET cookie')
+    res.send('done')
 })
 
 app.listen(PORT, HOST, () => {
