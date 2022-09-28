@@ -5,8 +5,8 @@ const app = express()
 
 const session = require('express-session')
 
-const HOST = '127.0.0.1'
-const PORT = 8888
+const HOST = '0.0.0.0'
+const PORT = 8000
 
 // app.set('trust proxy', 1)
 // app.use(cookieSession({
@@ -23,15 +23,15 @@ app.all('*', (req, res, next) => {
     next()
 })
 
-app.use(session({
-    name: 'sessionId',
-    secret: 'salt',
-    cookie: {
-        maxAge: 30000
-    },
-    resave: false,
-    saveUninitialized: false,
-}))
+// app.use(session({
+//     name: 'sessionId',
+//     secret: 'salt',
+//     cookie: {
+//         maxAge: 30000
+//     },
+//     resave: false,
+//     saveUninitialized: false,
+// }))
 
 // Access the session as req.session
 // app.get('/', (req, res, next) => {
@@ -48,27 +48,28 @@ app.use(session({
 //     }
 // })
 
+app.use(express.static('./dist'))
 app.get('/', (req, res) => {
-    res
-        .cookie('env1', 'private')
-        .cookie('env2', 'httpOnlyTest')
-        .send('index.html')
+
+    res.sendFile(path.resolve('./dist/webcam.html'))
 })
 
-app.get('/redirect', (req, res) => {
-    res.redirect('http://127.0.0.1:3344/#/home')
-})
+
+// app.get('/redirect', (req, res) => {
+//     res.redirect('http://127.0.0.1:3344/#/home')
+// })
 
 app.get('/ping', (req, res) => {
     res.json({
-        msg: 'get ping'
+        msg: 'pong'
     })
 })
 
-app.get('/base64', (req, res) => {
-    const str = fs.readFileSync('./img.jpg', {encoding: 'base64'})
-    res.send(str)
-})
+//
+// app.get('/base64', (req, res) => {
+//     const str = fs.readFileSync('./img.jpg', {encoding: 'base64'})
+//     res.send(str)
+// })
 
 app.listen(PORT, HOST, () => {
     console.log('server run')
