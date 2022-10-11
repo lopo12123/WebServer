@@ -1,9 +1,6 @@
-const fs = require('fs')
 const path = require('path')
 const express = require('express')
 const app = express()
-
-const session = require('express-session')
 
 const HOST = '0.0.0.0'
 const PORT = 8000
