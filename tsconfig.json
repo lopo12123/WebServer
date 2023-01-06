@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "target": "ESNext",
+        "allowJs": true,
+        "useDefineForClassFields": true,
+        "baseUrl": ".",
+        "experimentalDecorators": true,
+        "esModuleInterop": true
+    }
+}
