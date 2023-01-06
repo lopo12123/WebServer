@@ -1,8 +1,5 @@
 import CryptoJS from "crypto-js"
 
-//  MD5('MedPeer_data_key_' + YYYYMMDDHHm)
-//                                      ↑ 分钟的 十位
-
 abstract class CatalystplusCrypto {
     /**
      * @description 生成 key 种子
@@ -40,9 +37,9 @@ abstract class CatalystplusCrypto {
     }
 
     /**
-     * @description 加密
+     * @description 加密 Hex
      */
-    public static encode(str: string) {
+    public static encode_hex(str: string) {
         return CryptoJS.AES
             .encrypt(
                 CryptoJS.enc.Utf8.parse(str),
@@ -53,21 +50,64 @@ abstract class CatalystplusCrypto {
     }
 
     /**
-     * @description 解密
+     * @description 解密 Hex
      */
-    public static decode(str: string) {
+    public static decode_hex(str: string) {
         const _1 = CryptoJS.enc.Hex.parse(str)
         const _2 = CryptoJS.enc.Base64.stringify(_1)
         return CryptoJS.AES
             .decrypt(_2, CatalystplusCrypto.#generate_key(), CatalystplusCrypto.#generate_cfg())
             .toString(CryptoJS.enc.Utf8)
     }
+
+    /**
+     * @description 加密 Base64
+     */
+    public static encode_base64(str: string) {
+        return CryptoJS.AES
+            .encrypt(
+                CryptoJS.enc.Utf8.parse(str),
+                CatalystplusCrypto.#generate_key(),
+                CatalystplusCrypto.#generate_cfg()
+            )
+            .toString(CryptoJS.format.OpenSSL)
+    }
+
+    /**
+     * @description 解密 Base64
+     */
+    public static decode_base64(str: string) {
+        // const _1 = CryptoJS.enc.Base64.parse(str)
+        // const _2 = CryptoJS.enc.Base64.stringify(_1)
+        return CryptoJS.AES
+            .decrypt(str, CatalystplusCrypto.#generate_key(), CatalystplusCrypto.#generate_cfg())
+            .toString(CryptoJS.enc.Utf8)
+    }
 }
 
-const data_to_encode = 'jinghuashuiyue'
+export {
+    CatalystplusCrypto
+}
 
-const encoded = CatalystplusCrypto.encode(data_to_encode)
-const decoded = CatalystplusCrypto.decode(encoded)
+// const data_to_encode = 'hello'
+const data_to_encode = new Array(10000000)
+    .fill(0)
+    .map((_, idx) => (idx % 10).toFixed(0))
+    .join('')
+//
+const encoded_hex = CatalystplusCrypto.encode_hex(data_to_encode)
+const decoded_hex = CatalystplusCrypto.decode_hex(encoded_hex)
+
+const encoded_base64 = CatalystplusCrypto.encode_base64(data_to_encode)
+const decoded_base64 = CatalystplusCrypto.decode_base64(encoded_base64)
+
+console.time('serde')
+
 console.log('[Origin]', data_to_encode)
-console.log('[Encode]', encoded)
-console.log('[Decode]', decoded)
+console.log('[Encode-Base64]', encoded_base64)
+console.log('[Encode-Hex]', encoded_hex)
+console.log('[Decode-Base64]', decoded_base64)
+console.log('[Decode-Hex]', decoded_hex)
+// console.log('[Assert]', data_to_encode === decoded ? 'true' : 'false')
+
+console.timeEnd('serde')
