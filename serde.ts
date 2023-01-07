@@ -5,10 +5,10 @@ import CryptoJS from "crypto-js"
  * @example
  * const data_to_encode = 'Hello World'
  *
- * const encoded_base64 = CatalystPlusCrypto.encode_base64(data_to_encode)
- * const encoded_hex = CatalystPlusCrypto.encode_hex(data_to_encode)
- * const decoded_base64 = CatalystPlusCrypto.decode_base64(encoded_base64)
- * const decoded_hex = CatalystPlusCrypto.decode_hex(encoded_hex)
+ * const encoded_base64 = Serde.encode_base64(data_to_encode)
+ * const encoded_hex = Serde.encode_hex(data_to_encode)
+ * const decoded_base64 = Serde.decode_base64(encoded_base64)
+ * const decoded_hex = Serde.decode_hex(encoded_hex)
  *
  * console.log('[Origin]', data_to_encode)
  *
@@ -18,7 +18,7 @@ import CryptoJS from "crypto-js"
  * console.log('[Decode-Base64]', decoded_base64)
  * console.log('[Decode-Hex]', decoded_hex)
  */
-abstract class CatalystPlusCrypto {
+abstract class Serde {
     /**
      * @description 构建md5原文
      */
@@ -31,14 +31,14 @@ abstract class CatalystPlusCrypto {
      * @description 生成 key
      */
     static #generate_key() {
-        return CryptoJS.MD5(CatalystPlusCrypto.#generate_seed('key'))
+        return CryptoJS.MD5(Serde.#generate_seed('key'))
     }
 
     /**
      * @description 生成 iv
      */
     static #generate_iv() {
-        return CryptoJS.MD5(CatalystPlusCrypto.#generate_seed('iv'))
+        return CryptoJS.MD5(Serde.#generate_seed('iv'))
     }
 
     /**
@@ -46,7 +46,7 @@ abstract class CatalystPlusCrypto {
      */
     static #generate_cfg() {
         return {
-            iv: CatalystPlusCrypto.#generate_iv(),
+            iv: Serde.#generate_iv(),
             mode: CryptoJS.mode.CBC,
             padding: CryptoJS.pad.Pkcs7
         }
@@ -59,8 +59,8 @@ abstract class CatalystPlusCrypto {
         return CryptoJS.AES
             .encrypt(
                 CryptoJS.enc.Utf8.parse(str),
-                CatalystPlusCrypto.#generate_key(),
-                CatalystPlusCrypto.#generate_cfg()
+                Serde.#generate_key(),
+                Serde.#generate_cfg()
             )
             .ciphertext.toString(CryptoJS.enc.Base64)
     }
@@ -72,8 +72,8 @@ abstract class CatalystPlusCrypto {
         return CryptoJS.AES
             .encrypt(
                 CryptoJS.enc.Utf8.parse(str),
-                CatalystPlusCrypto.#generate_key(),
-                CatalystPlusCrypto.#generate_cfg()
+                Serde.#generate_key(),
+                Serde.#generate_cfg()
             )
             .ciphertext.toString(CryptoJS.enc.Hex)
     }
@@ -83,7 +83,7 @@ abstract class CatalystPlusCrypto {
      */
     public static decode_base64(str: string) {
         return CryptoJS.AES
-            .decrypt(str, CatalystPlusCrypto.#generate_key(), CatalystPlusCrypto.#generate_cfg())
+            .decrypt(str, Serde.#generate_key(), Serde.#generate_cfg())
             .toString(CryptoJS.enc.Utf8)
     }
 
@@ -94,11 +94,11 @@ abstract class CatalystPlusCrypto {
         const _de_hex = CryptoJS.enc.Hex.parse(str)
         const _re_base64 = CryptoJS.enc.Base64.stringify(_de_hex)
         return CryptoJS.AES
-            .decrypt(_re_base64, CatalystPlusCrypto.#generate_key(), CatalystPlusCrypto.#generate_cfg())
+            .decrypt(_re_base64, Serde.#generate_key(), Serde.#generate_cfg())
             .toString(CryptoJS.enc.Utf8)
     }
 }
 
 export {
-    CatalystPlusCrypto
+    Serde
 }

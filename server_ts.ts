@@ -2,7 +2,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
-import { CatalystplusCrypto } from "./CatalystplusCrypto";
+import { CatalystplusCrypto } from "../../Projects/mobile-refactor/scripts/CatalystplusCrypto";
 
 const app = express()
 
