@@ -1,9 +1,10 @@
+const path = require('path')
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 
 const HOST = '0.0.0.0'
-const PORT = 3333
+const PORT = 80
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -13,10 +14,19 @@ app.all('*', (req, res, next) => {
     next()
 })
 
-app.post('/crypto', (req, res) => {
-    console.log(req.body)
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './wx_login.html'))
+})
 
-    res.json({ name: 123 })
+app.get('/redirect', (req, res) => {
+    res.redirect('http://不存在的url地址')
+})
+
+app.get('/wx/callback', (req, res) => {
+    console.log(req.body)
+    console.log(req.params)
+
+    res.sendFile(path.join(__dirname, './param_display.html'))
 })
 
 app.listen(PORT, HOST, () => {

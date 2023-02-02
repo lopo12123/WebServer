@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>微信扫码登录测试</title>
+        <script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
+    </head>
+    <body>
+        <p>微信登录</p>
+
+        <div id="login_container"></div>
+
+        <button onclick="login()">login</button>
+
+        <script>
+            const login = () => {
+                var obj = new WxLogin({
+                    self_redirect:true,
+                    id:"login_container",
+                    appid: "wx1ec8e76a7d325831",
+                    scope: "snsapi_login",
+                    redirect_uri: "http%3A%2F%2F127.0.0.1%2Fwx%2Fcallback",
+                    state: "123123",
+                    style: "",
+                    href: ""
+                });
+            }
+        </script>
+    </body>
+</html>

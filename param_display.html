@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Params</title>
+    </head>
+    <body>
+        <pre id="result"></pre>
+
+
+
+        <script>
+            window.onload = () => {
+                const query = document.location.search.slice(1)
+                if (!query) alert('无参数')
+                else {
+                    const obj = {}
+                    query.split('&').map(v => v.split('=')).forEach(([ k, v ]) => obj[k] = v)
+                    document.getElementById('result').innerHTML = JSON.stringify(obj, null, 4) + '<p>\n' +
+                        '            类似pdf页面交互, 发送消息给node端\n' +
+                        '        </p>'
+                }
+            }
+        </script>
+    </body>
+</html>
